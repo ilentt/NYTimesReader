@@ -1,48 +1,47 @@
 package com.ilenlab.ilentt.nytimesreader.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import org.parceler.Parcel;
+
+import java.util.ArrayList;
 
 /**
  * Created by ADMIN on 3/18/2016.
  */
-public class Article implements Parcelable{
+@Parcel
+public class Article {
 
-    private String webUrl;
-    private String headLine;
-    private String thumbNail;
+    public String webUrl;
+    public String headLine;
+    public String snippet;
 
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.webUrl);
-        dest.writeString(this.headLine);
-        dest.writeString(this.thumbNail);
-    }
+    public final static String NYT_URL = "http://nytimes.com/";
+    public ArrayList<String> media;
 
     public Article() {
+        media = new ArrayList<>();
     }
 
-    protected Article(Parcel in) {
-        this.webUrl = in.readString();
-        this.headLine = in.readString();
-        this.thumbNail = in.readString();
+    public boolean hasThumbnail() {
+        return media.size() > 0;
     }
 
-    public static final Creator<Article> CREATOR = new Creator<Article>() {
-        @Override
-        public Article createFromParcel(Parcel source) {
-            return new Article(source);
+    public String getThumbnail() {
+        if(media.size() > 0) {
+            return NYT_URL + media.get(0);
+        } else {
+            return "";
         }
+    }
 
-        @Override
-        public Article[] newArray(int size) {
-            return new Article[size];
-        }
-    };
+    public String getWebUrl() {
+        return webUrl;
+    }
+
+    public String getHeadLine() {
+        return headLine;
+    }
+
+    public String getSnippet() {
+        return snippet;
+    }
 }
