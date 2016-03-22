@@ -4,11 +4,11 @@ import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.ilenlab.ilentt.nytimesreader.R;
@@ -71,11 +71,11 @@ public class ArticleSearchActivity extends AppCompatActivity implements ClientAP
     public static final int BEGIN_DAY = 1;
 
     // Reducing View Boilerplate with Butterknife
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-
     @Bind(R.id.rvArticles)
     RecyclerView rvArticles;
+
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
 
     @Bind(R.id.tvBeginDate)
     TextView tvBeginDate;
@@ -88,7 +88,7 @@ public class ArticleSearchActivity extends AppCompatActivity implements ClientAP
 
     ClientAPI clientAPI;
 
-    String searchQuery =  "";
+    String searchQuery = "";
     Calendar beginDate = Calendar.getInstance();
     ArticleOrder articleOrder = ArticleOrder.NEWEST;
     HashMap<Categories, Boolean> categories = new HashMap<>();
@@ -97,7 +97,6 @@ public class ArticleSearchActivity extends AppCompatActivity implements ClientAP
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_search);
-
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
@@ -124,12 +123,14 @@ public class ArticleSearchActivity extends AppCompatActivity implements ClientAP
                 clientAPI.getArticles(searchQuery, page, beginDate, articleOrder, categories, ArticleSearchActivity.this);
             }
         });
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_articles_list, menu);
         final MenuItem searchItem = menu.findItem(R.id.action_search);
+
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
