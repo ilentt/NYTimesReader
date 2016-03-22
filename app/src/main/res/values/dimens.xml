@@ -5,4 +5,6 @@
     <dimen name="application_bar_height">100dp</dimen>
 
     <dimen name="order_padding">6dp</dimen>
+    <dimen name="article_text_size">14sp</dimen>
+    <dimen name="article_text_padding">6dp</dimen>
 </resources>
