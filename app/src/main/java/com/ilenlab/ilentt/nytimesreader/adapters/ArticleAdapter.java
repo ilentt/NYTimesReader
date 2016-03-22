@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -123,9 +124,11 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         } else {
             resource = R.layout.item_text_article;
         }
+        Log.d("DEBUG", String.valueOf(resource));
 
         RecyclerView.ViewHolder viewHolder;
         View articleView = inflater.inflate(resource, parent, false);
+
         if(viewType == ArticleType.IMAGE.value) {
             viewHolder = new ImageViewHolder(context, articleView);
         } else {

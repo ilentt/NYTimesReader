@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.FieldNamingPolicy;
@@ -51,7 +52,7 @@ public class ClientAPI {
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
-        gsonBuilder.create();
+        gson = gsonBuilder.create();
     }
 
     // access search api
@@ -87,8 +88,10 @@ public class ClientAPI {
 
         if(!TextUtils.isEmpty(catValue)) {
             catValue = "new_desk:(" + catValue + ")";
-            requestParams.put("fp", catValue);
+            requestParams.put("fq", catValue);
         }
+
+        Log.d("DEBUG", requestParams.toString());
 
         if(!isNetworkAvailable() || !isOnline()) {
             Toast.makeText(context, INTERNET_FAILED_MESSAGE, Toast.LENGTH_SHORT).show();
@@ -100,8 +103,12 @@ public class ClientAPI {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
                     JSONObject jsonObject = response.getJSONObject("response");
+                    Log.d("DEBUG", jsonObject.toString());
+
                     ArticleData articleData = gson.fromJson(jsonObject.toString(), ArticleData.class);
                     articlesHandle.onNewArticles(articleData.articles);
+
+
                 }catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -124,7 +131,7 @@ public class ClientAPI {
     public boolean isOnline() {
         Runtime runtime = Runtime.getRuntime();
         try {
-            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8 8 8 8");
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
             int exitValue = ipProcess.waitFor();
             return (exitValue == 0);
         }catch (InterruptedException e) {
