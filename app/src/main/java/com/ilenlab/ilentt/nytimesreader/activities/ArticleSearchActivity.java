@@ -1,5 +1,6 @@
 package com.ilenlab.ilentt.nytimesreader.activities;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,9 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.DatePicker;
+import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.ilenlab.ilentt.nytimesreader.R;
@@ -24,6 +28,7 @@ import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by ADMIN on 3/18/2016.
@@ -105,7 +110,7 @@ public class ArticleSearchActivity extends AppCompatActivity implements ClientAP
         articleAdapter = new ArticleAdapter(articles);
 
         OLDEST_DATE.set(BEGIN_YEAR, Calendar.JANUARY, BEGIN_DAY, 0, 0, 0);
-        setBeginDate(BEGIN_YEAR, Calendar.JANUARY, BEGIN_DAY);
+        setBeginDate(BEGIN_DAY, Calendar.JANUARY, BEGIN_YEAR);
         setCategories(Categories.ARTS, false);
         setCategories(Categories.FASHION, false);
         setCategories(Categories.SPORT, false);
@@ -174,5 +179,75 @@ public class ArticleSearchActivity extends AppCompatActivity implements ClientAP
 
     private void setCategories(Categories key, boolean value) {
         this.categories.put(key, value);
+    }
+
+    @OnClick(R.id.filterDate)
+    public void pickDate(LinearLayout layout) {
+        int beginDay = beginDate.get(Calendar.DAY_OF_MONTH);
+        int beginMonth = beginDate.get(Calendar.MONTH);
+        int beginYear = beginDate.get(Calendar.YEAR);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                setBeginDate(dayOfMonth, monthOfYear, year);
+                refreshArticle();
+            }
+        }, beginDay, beginMonth, beginDay);
+        datePickerDialog.getDatePicker().setMinDate(OLDEST_DATE.getTime().getTime());
+        datePickerDialog.show();
+    }
+
+    @OnClick(R.id.filterCategories)
+    public void pickSection(LinearLayout layout) {
+        PopupMenu popupMenu = new PopupMenu(this, layout);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_categories, popupMenu.getMenu());
+        popupMenu.getMenu().getItem(0).setChecked(categories.get(Categories.ARTS));
+        popupMenu.getMenu().getItem(1).setChecked(categories.get(Categories.FASHION));
+        popupMenu.getMenu().getItem(2).setChecked(categories.get(Categories.SPORT));
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.mnuArts:
+                        setCategories(Categories.ARTS, !categories.get(Categories.ARTS));
+                        break;
+                    case R.id.mnuFashion:
+                        setCategories(Categories.FASHION, !categories.get(Categories.FASHION));
+                        break;
+                    case R.id.mnuSport:
+                        setCategories(Categories.SPORT, !categories.get(Categories.SPORT));
+                        break;
+                }
+                refreshArticle();
+                return true;
+            }
+
+        });
+        popupMenu.show();
+    }
+
+    @OnClick(R.id.filterOrder)
+    public void pickOrder(LinearLayout layout) {
+        PopupMenu popupMenu = new PopupMenu(this, layout);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_order, popupMenu.getMenu());
+        popupMenu.getMenu().getItem(articleOrder.index).setChecked(true);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.mnuOldest:
+                        setArticleOrder(ArticleOrder.OLDEST);
+                        break;
+                    case  R.id.mnuNewest:
+                        setArticleOrder(ArticleOrder.NEWEST);
+                        break;
+                }
+                refreshArticle();
+                return true;
+            }
+        });
+        popupMenu.show();
     }
 }

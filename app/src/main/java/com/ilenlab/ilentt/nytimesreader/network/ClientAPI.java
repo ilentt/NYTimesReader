@@ -33,7 +33,7 @@ import cz.msebera.android.httpclient.Header;
 public class ClientAPI {
 
     private static final String API_KEY = "9b6eba264e6565103841b71090219b99:8:74731185";
-    private static final String URL_JSON = "http://api.nytimes.com/svc/search/v2/articlesearch.json";
+    private static final String API_URL = "http://api.nytimes.com/svc/search/v2/articlesearch.json";
     private static final String INTERNET_FAILED_MESSAGE = "Cannot retrieve articles. Please check your Internet connection.";
     private static final String GET_DATA_FAILED_MESSAGE = "Unexpected issue while retrieving articles. Please try again later.";
 
@@ -95,7 +95,7 @@ public class ClientAPI {
             return;
         }
 
-        client.get(URL_JSON, requestParams, new JsonHttpResponseHandler() {
+        client.get(API_URL, requestParams, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
@@ -126,6 +126,7 @@ public class ClientAPI {
         try {
             Process ipProcess = runtime.exec("/system/bin/ping -c 1 8 8 8 8");
             int exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
         }catch (InterruptedException e) {
             e.printStackTrace();
         } catch (IOException e) {

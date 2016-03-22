@@ -4,4 +4,9 @@
     <string name="actionbar_categories">Categories</string>
     <string name="actionbar_order_by">Order by</string>
     <string name="article_default_text">ARTICLE</string>
+    <string name="menu_arts">Arts</string>
+    <string name="menu_fashion">Fashion &amp; Style</string>
+    <string name="menu_sport">Sport</string>
+    <string name="menu_order_oldest">Oldest</string>
+    <string name="menu_order_newest">Newest</string>
 </resources>
