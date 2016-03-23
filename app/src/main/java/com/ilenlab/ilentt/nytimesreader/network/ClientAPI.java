@@ -40,7 +40,7 @@ public class ClientAPI {
 
     private AsyncHttpClient client;
     private Context context;
-    private Gson gson;
+    Gson gson;
 
     public interface ArticlesHandle {
         public void onNewArticles(ArrayList<Article> articles);
@@ -66,9 +66,9 @@ public class ClientAPI {
         requestParams.put("q", query);
 
         if(!beginDate.equals(ArticleSearchActivity.OLDEST_DATE)) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
             String string = dateFormat.format(beginDate.getTime());
-            requestParams.put("beginDate", string);
+            requestParams.put("begin_date", string);
         }
 
         if(order == ArticleSearchActivity.ArticleOrder.OLDEST) {
@@ -108,6 +108,7 @@ public class ClientAPI {
                     ArticleData articleData = gson.fromJson(jsonObject.toString(), ArticleData.class);
                     articlesHandle.onNewArticles(articleData.articles);
 
+                    Log.d("DEBUG", articleData.articles.toString());
 
                 }catch (Exception e) {
                     e.printStackTrace();

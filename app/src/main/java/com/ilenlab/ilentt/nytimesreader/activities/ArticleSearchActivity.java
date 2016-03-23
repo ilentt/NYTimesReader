@@ -72,8 +72,8 @@ public class ArticleSearchActivity extends AppCompatActivity implements ClientAP
     }
 
     public static Calendar OLDEST_DATE = Calendar.getInstance();
-    public static final int BEGIN_YEAR = 1990;
-    public static final int BEGIN_DAY = 1;
+    public static int BEGIN_YEAR = 1990;
+    public static int BEGIN_DAY = 1;
 
     // Reducing View Boilerplate with Butterknife
     @Bind(R.id.rvArticles)
@@ -110,7 +110,7 @@ public class ArticleSearchActivity extends AppCompatActivity implements ClientAP
         articleAdapter = new ArticleAdapter(articles);
 
         OLDEST_DATE.set(BEGIN_YEAR, Calendar.JANUARY, BEGIN_DAY, 0, 0, 0);
-        setBeginDate(BEGIN_DAY, Calendar.JANUARY, BEGIN_YEAR);
+        setBeginDate(BEGIN_YEAR, Calendar.JANUARY, BEGIN_DAY);
         setCategories(Categories.ARTS, false);
         setCategories(Categories.FASHION, false);
         setCategories(Categories.SPORT, false);
@@ -169,7 +169,7 @@ public class ArticleSearchActivity extends AppCompatActivity implements ClientAP
     }
 
     private void setBeginDate(int day, int month, int year) {
-        this.beginDate.set(day, month, year, 0, 0, 0);
+        this.beginDate.set(year, month, day, 0, 0, 0);
         tvBeginDate.setText(String.format("%d/%d/%d", day, month + 1, year));
     }
 
@@ -193,7 +193,7 @@ public class ArticleSearchActivity extends AppCompatActivity implements ClientAP
                 setBeginDate(dayOfMonth, monthOfYear, year);
                 refreshArticle();
             }
-        }, beginDay, beginMonth, beginDay);
+        }, beginDay, beginMonth, beginYear);
         datePickerDialog.getDatePicker().setMinDate(OLDEST_DATE.getTime().getTime());
         datePickerDialog.show();
     }

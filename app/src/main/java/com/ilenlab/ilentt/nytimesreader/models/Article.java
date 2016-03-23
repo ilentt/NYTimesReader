@@ -11,23 +11,23 @@ import java.util.ArrayList;
 public class Article {
 
     public String webUrl;
-    public String headLine;
+    public HeadLine headline;
     public String snippet;
 
-    public final static String NYT_URL = "http://nytimes.com/";
-    public ArrayList<String> media;
+    public static final String NYT_URL = "http://nytimes.com/";
+    public ArrayList<Media> multimedia;
 
     public Article() {
-        media = new ArrayList<>();
+        multimedia = new ArrayList<>();
     }
 
     public boolean hasThumbnail() {
-        return media.size() > 0;
+        return multimedia.size() > 0;
     }
 
     public String getThumbnail() {
-        if(media.size() > 0) {
-            return NYT_URL + media.get(0);
+        if(multimedia.size() > 0) {
+            return NYT_URL + multimedia.get(0).url;
         } else {
             return "";
         }
@@ -37,8 +37,8 @@ public class Article {
         return webUrl;
     }
 
-    public String getHeadLine() {
-        return headLine;
+    public String getHeadline() {
+        return headline.main;
     }
 
     public String getSnippet() {

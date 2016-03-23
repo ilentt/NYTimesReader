@@ -64,7 +64,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
         public void setArticle(Article article) {
             this.article = article;
-            tvHeadLine.setText(article.getHeadLine());
+            tvHeadLine.setText(article.getHeadline());
             String thumbnail = article.getThumbnail();
             if(!TextUtils.isEmpty(thumbnail)) {
                 Glide.with((ArticleSearchActivity) context).load(thumbnail).into(ivThumbnail);
@@ -102,7 +102,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         public void setArticle(Article article) {
             this.article = article;
-            tvHeadline.setText(article.getHeadLine());
+            tvHeadline.setText(article.getHeadline());
             tvSnippet.setText(article.getSnippet());
         }
         @Override
